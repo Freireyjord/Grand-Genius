@@ -1,10 +1,10 @@
 #include <msp430.h>
 #include <stdlib.h>
 
-#define BUTTON1 BIT3
-#define BUTTON2 BIT4
-#define BUTTON3 BIT5
-#define BUTTON4 BIT6
+#define BUTTON1 BIT4
+#define BUTTON2 BIT5
+#define BUTTON3 BIT6
+#define BUTTON4 BIT7
 
 #define LED1 BIT0
 #define LED2 BIT1
