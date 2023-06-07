@@ -1,15 +1,15 @@
 #include <msp430.h>
 #include <stdlib.h>
 
-#define BUTTON1 BIT4
-#define BUTTON2 BIT5
-#define BUTTON3 BIT6
-#define BUTTON4 BIT7
+#define BUTr BIT4
+#define BUTg BIT5
+#define BUTb BIT6
+#define BUTy BIT7
 
-#define LED1 BIT0
-#define LED2 BIT1
-#define LED3 BIT2
-#define LED4 BIT3
+#define LEDr BIT0
+#define LEDg BIT1
+#define LEDb BIT2
+#define LEDy BIT3
 
 #define DELAY_CYCLES 100000
 
@@ -21,12 +21,12 @@ int game_over = 0;
 void initialize()
 {
     WDTCTL = WDTPW + WDTHOLD; // Desabilitar o Watchdog Timer
-    P1DIR |= (LED1 + LED2 + LED3 + LED4); // Definir pinos dos LEDs como saída
-    P1OUT &= ~(LED1 + LED2 + LED3 + LED4); // Desligar todos os LEDs
-    P1REN |= (BUTTON1 + BUTTON2 + BUTTON3 + BUTTON4); // Habilitar resistor de pull-up interno para os botões
-    P1IE |= (BUTTON1 + BUTTON2 + BUTTON3 + BUTTON4); // Habilitar interrupção para os botões
-    P1IES |= (BUTTON1 + BUTTON2 + BUTTON3 + BUTTON4); // Definir interrupção para borda de descida
-    P1IFG &= ~(BUTTON1 + BUTTON2 + BUTTON3 + BUTTON4); // Limpar as flags de interrupção dos botões
+    P1DIR |= (LEDr + LEDg + LEDb + LEDy); // Definir pinos dos LEDs como saída
+    P1OUT &= ~(LEDr + LEDg + LEDb + LEDy); // Desligar todos os LEDs
+    P1REN |= (BUTr + BUTg + BUTb + BUTy); // Habilitar resistor de pull-up interno para os botões
+    P1IE |= (BUTr + BUTg + BUTb + BUTy); // Habilitar interrupção para os botões
+    P1IES |= (BUTr + BUTg + BUTb + BUTy); // Definir interrupção para borda de descida
+    P1IFG &= ~(BUTr + BUTg + BUTb + BUTy); // Limpar as flags de interrupção dos botões
     __enable_interrupt(); // Habilitar interrupções gerais
 }
 
@@ -44,27 +44,27 @@ void show_sequence()
     for (i = 0; i < sequence_length; i++) {
         switch (sequence[i]) {
             case 0:
-                P1OUT |= LED1;
+                P1OUT |= LEDr;
                 __delay_cycles(DELAY_CYCLES);
-                P1OUT &= ~LED1;
+                P1OUT &= ~LEDr;
                 __delay_cycles(DELAY_CYCLES);
                 break;
             case 1:
-                P1OUT |= LED2;
+                P1OUT |= LEDg;
                 __delay_cycles(DELAY_CYCLES);
-                P1OUT &= ~LED2;
+                P1OUT &= ~LEDg;
                 __delay_cycles(DELAY_CYCLES);
                 break;
             case 2:
-                P1OUT |= LED3;
+                P1OUT |= LEDb;
                 __delay_cycles(DELAY_CYCLES);
-                P1OUT &= ~LED3;
+                P1OUT &= ~LEDb;
                 __delay_cycles(DELAY_CYCLES);
                 break;
             case 3:
-                P1OUT |= LED4;
+                P1OUT |= LEDy;
                 __delay_cycles(DELAY_CYCLES);
-                P1OUT &= ~LED4;
+                P1OUT &= ~LEDy;
                 __delay_cycles(DELAY_CYCLES);
                 break;
         }
@@ -80,20 +80,15 @@ int check_button_press(int button)
     }
 }
 
-void game_over_animation()
+void game_over_sequence()
 {
     int i;
     for (i = 0; i < 3; i++) {
-        P1OUT |= (LED1 + LED2 + LED3 + LED4);
+        P1OUT |= (LEDr + LEDg + LEDb + LEDy);
         __delay_cycles(DELAY_CYCLES);
-        P1OUT &= ~(LED1 + LED2 + LED3 + LED4);
+        P1OUT &= ~(LEDr + LEDg + LEDb + LEDy);
         __delay_cycles(DELAY_CYCLES);
     }
-}
-
-void game_over_sequence()
-{
-    game_over_animation();
     game_over = 1;
 }
 
@@ -101,27 +96,27 @@ void button_press(int button)
 {
     switch (button) {
         case 0:
-            P1OUT |= LED1;
+            P1OUT |= LEDr;
             __delay_cycles(DELAY_CYCLES);
-            P1OUT &= ~LED1;
+            P1OUT &= ~LEDr;
             __delay_cycles(DELAY_CYCLES);
             break;
         case 1:
-            P1OUT |= LED2;
+            P1OUT |= LEDg;
             __delay_cycles(DELAY_CYCLES);
-            P1OUT &= ~LED2;
+            P1OUT &= ~LEDg;
             __delay_cycles(DELAY_CYCLES);
             break;
         case 2:
-            P1OUT |= LED3;
+            P1OUT |= LEDb;
             __delay_cycles(DELAY_CYCLES);
-            P1OUT &= ~LED3;
+            P1OUT &= ~LEDb;
             __delay_cycles(DELAY_CYCLES);
             break;
         case 3:
-            P1OUT |= LED4;
+            P1OUT |= LEDy;
             __delay_cycles(DELAY_CYCLES);
-            P1OUT &= ~LED4;
+            P1OUT &= ~LEDy;
             __delay_cycles(DELAY_CYCLES);
             break;
     }
